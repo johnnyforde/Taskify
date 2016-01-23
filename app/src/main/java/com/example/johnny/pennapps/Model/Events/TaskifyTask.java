@@ -65,7 +65,7 @@ public class TaskifyTask extends TaskifySchedulable {
         return this.deadline;
     }
 
-    // getter for d
+    // getter for duration
     public Duration getTaskTime() {
         return this.taskTime;
     }

@@ -17,5 +17,5 @@ public abstract class TaskifySchedulable {
 
     public double getPriority() {
         return priority;
-    };
+    }
 }
