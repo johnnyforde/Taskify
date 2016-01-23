@@ -14,7 +14,7 @@
     tools:context="com.example.johnny.pennapps.MainActivity">
 
     <TextView
-        android:text="Hello World!1"
+        android:text="Hello World!"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 </RelativeLayout>
