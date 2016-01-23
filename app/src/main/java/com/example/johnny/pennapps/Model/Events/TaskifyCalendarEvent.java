@@ -28,6 +28,6 @@ public class TaskifyCalendarEvent {
 
     @Override
     public String toString() {
-        return "" + event.getName() + ": " + interval;
+        return event.getName() + ": " + interval;
     }
 }
