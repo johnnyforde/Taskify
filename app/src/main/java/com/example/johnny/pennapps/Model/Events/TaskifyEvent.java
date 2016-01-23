@@ -8,7 +8,7 @@ import java.util.Date;
 public class TaskifyEvent extends TaskifySchedulable {
 
     // Constant for highest priority for scheduling
-    private static final int HIGHEST_PRIORITY = 0;
+    private static final double HIGHEST_PRIORITY = 0;
 
     private Date startTime;
     private Date endTime;
@@ -17,11 +17,6 @@ public class TaskifyEvent extends TaskifySchedulable {
         this.priority = HIGHEST_PRIORITY;
         this.startTime = startTime;
         this.endTime = endTime;
-    }
-
-    public int getPriority() {
-        // Return highest priority
-        return priority;
     }
 
     @Override
