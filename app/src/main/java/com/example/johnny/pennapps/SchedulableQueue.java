@@ -2,14 +2,16 @@ package com.example.johnny.pennapps;
 //package com.example.johnny.pennapps.Model.Events.TaskifySchedulable;
 
 
-import java.util.PriorityQueue;
-import java.util.ArrayList;
-import java.util.List;
 import com.example.johnny.pennapps.Model.Events.TaskifySchedulable;
 import com.example.johnny.pennapps.Model.Events.TaskifyTask;
+
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 import org.joda.time.Interval;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.PriorityQueue;
 
 
 /**
@@ -41,6 +43,7 @@ public class SchedulableQueue {
         Duration timeToDeadline = new Duration(currentTime.getMillis(), lastDeadline.getMillis());
 
         // Incomplete
+        return new ArrayList<Interval>();
     }
 
     public double taskifyMDD(double processed, TaskifyTask task) {
@@ -56,6 +59,8 @@ public class SchedulableQueue {
 //            double bestFinishTime =
         }
 
+        return sortedTasks;
         // Incomplete
     }
+
 }

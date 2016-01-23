@@ -5,9 +5,21 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+
+import com.example.johnny.pennapps.Model.Events.RepeatingInterval;
+import com.example.johnny.pennapps.Model.Events.TaskifyCalendarEvent;
+import com.example.johnny.pennapps.Model.Events.TaskifyCommitment;
+
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+import org.joda.time.LocalTime;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,6 +38,14 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        List<TaskifyCalendarEvent> commitments = new ArrayList<TaskifyCalendarEvent>();
+        TaskifyCommitment breakfast = new TaskifyCommitment("Breakfast", new DateTime(2016, 1, 25, 7, 30), new DateTime(2016, 1 , 25, 8, 30));
+        TaskifyCommitment school = new TaskifyCommitment("School", new LocalTime(7,45), new LocalTime(14,50), new LocalDate(2016, 1, 25), new LocalDate(2016, 5, 17), RepeatingInterval.WEEKDAYS);
+        commitments.addAll(breakfast.getScheduledTimes());
+        commitments.addAll(school.getScheduledTimes());
+        Log.i("KEVIN", "Commitments: " + commitments);
+
     }
 
     @Override
