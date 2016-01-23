@@ -13,6 +13,7 @@ import android.view.View;
 import com.example.johnny.pennapps.Model.Events.RepeatingInterval;
 import com.example.johnny.pennapps.Model.Events.TaskifyCalendarEvent;
 import com.example.johnny.pennapps.Model.Events.TaskifyCommitment;
+import com.firebase.client.Firebase;
 
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
@@ -26,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Firebase.setAndroidContext(this);
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -45,6 +48,9 @@ public class MainActivity extends AppCompatActivity {
         commitments.addAll(breakfast.getScheduledTimes());
         commitments.addAll(school.getScheduledTimes());
         Log.i("KEVIN", "Commitments: " + commitments);
+
+        Firebase database = new Firebase("https://pennTaskify.firebaseio.com/");
+        database.child("lecture").setValue("CS-101");
 
     }
 

@@ -2,10 +2,14 @@ package com.example.johnny.pennapps;
 //package com.example.johnny.pennapps.Model.Events.TaskifySchedulable;
 
 
+import android.util.Log;
+
 import java.util.PriorityQueue;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Comparator;
+
+import com.example.johnny.pennapps.Model.Events.TaskifyCalendarEvent;
 import com.example.johnny.pennapps.Model.Events.TaskifySchedulable;
 import com.example.johnny.pennapps.Model.Events.TaskifyTask;
 import org.joda.time.DateTime;
@@ -16,7 +20,7 @@ import org.joda.time.Interval;
 /**
  * Created by jasonlin on 1/22/16.
  */
-public class SchedulableQueue {
+public class ScheduleAlgorithm {
 
     // Comparator class
     public static final class priorityComparator implements Comparator<TaskifyTask> {
@@ -29,7 +33,7 @@ public class SchedulableQueue {
     }
 
     public PriorityQueue<TaskifySchedulable> requestQueue;
-//    public SchedulableQueue(PriorityQueue<TaskifySchedulable> requestQueue) {
+//    public ScheduleAlgorithm(PriorityQueue<TaskifySchedulable> requestQueue) {
 //        this.requestQueue = requestQueue;
 //    }
 
@@ -41,15 +45,22 @@ public class SchedulableQueue {
     /**
      * Original algorithm: Priority = (Deadline - processed) - remainingTime / difficulty;
      */
-    public List<Interval> scheduleTasksByPriority(ArrayList<TaskifyTask> toSchedule) {
+    public List<TaskifyCalendarEvent> scheduleTasksByPriority(ArrayList<TaskifyTask> toSchedule) {
         DateTime currentTime = new DateTime();
         DateTime lastDeadline = new DateTime();
+        Duration totalTime = new Duration(0);
         for (TaskifyTask task : toSchedule) {
             if (task.getDeadline().isAfter(lastDeadline)) {
                 lastDeadline = task.getDeadline();
             }
+            totalTime = totalTime.withDurationAdded(task.getTaskTime(),1);
         }
         Duration timeToDeadline = new Duration(currentTime.getMillis(), lastDeadline.getMillis());
+        if (totalTime.isLongerThan(timeToDeadline)) {
+//            String i = "Cannot schedule! Total time required exceeds existing time";
+            Log.i("Jason","Cannot schedule! Total time required exceeds existing time");
+        }
+
 
         // Sort by MDD
         ArrayList<TaskifyTask> mddSorted = taskifySort(toSchedule);
@@ -62,9 +73,9 @@ public class SchedulableQueue {
             queue.add(mddTask);
         }
         for (TaskifyTask priorityTask : queue) {
-            prioritySorted.add(priorityTask);
+//            prioritySorted.add(priorityTask);
         }
-        return prioritySorted;
+        return null;
     }
 
     public double taskifyMDD(double processed, TaskifyTask task) {

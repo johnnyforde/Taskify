@@ -17,6 +17,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE' // will not include NOTICE file
+    }
 }
 
 dependencies {
@@ -25,4 +29,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
     compile 'joda-time:joda-time:2.8.2' // for joda
+    compile 'com.firebase:firebase-client-android:2.5.0+' // for firebase
 }
