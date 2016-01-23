@@ -70,6 +70,9 @@ public class TaskifyTask extends TaskifySchedulable {
         return this.taskTime;
     }
 
+    public Duration getTaskCompleted() {
+        return this.taskCompleted;
+    }
     public String toString() {
         return "Task: " + this.name + "; Deadline: " + this.deadline + "; Task Time: " + this.taskTime
                 + "; Completed: " + this.taskCompleted;

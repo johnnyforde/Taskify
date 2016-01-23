@@ -5,6 +5,7 @@ package com.example.johnny.pennapps;
 import java.util.PriorityQueue;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Comparator;
 import com.example.johnny.pennapps.Model.Events.TaskifySchedulable;
 import com.example.johnny.pennapps.Model.Events.TaskifyTask;
 import org.joda.time.DateTime;
@@ -17,10 +18,20 @@ import org.joda.time.Interval;
  */
 public class SchedulableQueue {
 
-    public PriorityQueue<TaskifySchedulable> requestQueue;
-    public SchedulableQueue(PriorityQueue<TaskifySchedulable> requestQueue) {
-        this.requestQueue = requestQueue;
+    // Comparator class
+    public static final class priorityComparator implements Comparator<TaskifyTask> {
+        @Override
+        public int compare (TaskifyTask a, TaskifyTask b) {
+            Double a1 = new Double(a.getPriority());
+            Double b1 = new Double(b.getPriority());
+            return a1.compareTo(b1);
+        }
     }
+
+    public PriorityQueue<TaskifySchedulable> requestQueue;
+//    public SchedulableQueue(PriorityQueue<TaskifySchedulable> requestQueue) {
+//        this.requestQueue = requestQueue;
+//    }
 
     public ArrayList<TaskifySchedulable> schedule () {
         ArrayList<TaskifySchedulable> schedules = new ArrayList<TaskifySchedulable>();
@@ -40,7 +51,20 @@ public class SchedulableQueue {
         }
         Duration timeToDeadline = new Duration(currentTime.getMillis(), lastDeadline.getMillis());
 
-        // Incomplete
+        // Sort by MDD
+        ArrayList<TaskifyTask> mddSorted = taskifySort(toSchedule);
+        ArrayList<Interval> prioritySorted = new ArrayList<Interval>();
+
+        // Sort by MDD then by Priority
+        Comparator<TaskifyTask> comp = new priorityComparator();
+        PriorityQueue<TaskifyTask> queue = new PriorityQueue<TaskifyTask>(0, comp);
+        for (TaskifyTask mddTask : mddSorted) {
+            queue.add(mddTask);
+        }
+        for (TaskifyTask priorityTask : queue) {
+            prioritySorted.add(priorityTask);
+        }
+        return prioritySorted;
     }
 
     public double taskifyMDD(double processed, TaskifyTask task) {
@@ -50,12 +74,23 @@ public class SchedulableQueue {
     public ArrayList<TaskifyTask> taskifySort(ArrayList<TaskifyTask> toSchedule) {
         ArrayList<TaskifyTask> unsortedTasks =  new ArrayList<TaskifyTask>(toSchedule);
         ArrayList<TaskifyTask> sortedTasks = new ArrayList<TaskifyTask>();
+        double processed = 0;
 
         while (!unsortedTasks.isEmpty()) {
             TaskifyTask bestTask = unsortedTasks.get(0);
-//            double bestFinishTime =
+            double bestFinishTime = taskifyMDD(bestTask.getTaskCompleted().getMillis(), bestTask);
+            for (TaskifyTask task : unsortedTasks) {
+                double finishTime = taskifyMDD(task.getTaskCompleted().getMillis(), task);
+                if (finishTime < bestFinishTime) {
+                    bestFinishTime = finishTime;
+                    bestTask = task;
+                }
+            }
+            sortedTasks.add(bestTask);
+            unsortedTasks.remove(bestTask);
+            processed += bestTask.getTaskTime().getMillis();
         }
 
-        // Incomplete
+        return sortedTasks;
     }
 }
