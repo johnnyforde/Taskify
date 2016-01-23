@@ -13,11 +13,11 @@ import java.util.List;
  */
 public class TaskifyTask extends TaskifySchedulable {
 
-    // User defined difficulty of task
+    // User defined difficulty of task, range {1-10}
     private double  difficulty;
     // Deadline that the task must be completed by
     private final DateTime deadline;
-    // Amount of time the task would take
+    // Amount of time the task would take, Jason: is this dynamic/changing?
     private final Duration taskTime;
     // Amount of time spent working on this task
     private final Duration taskCompleted;
@@ -58,6 +58,16 @@ public class TaskifyTask extends TaskifySchedulable {
 
     public void setScheduledTimes(List<Interval> scheduledTimes) {
         this.scheduledTimes = scheduledTimes;
+    }
+
+    // getter for deadline
+    public DateTime getDeadline() {
+        return this.deadline;
+    }
+
+    // getter for d
+    public Duration getTaskTime() {
+        return this.taskTime;
     }
 
     public String toString() {
