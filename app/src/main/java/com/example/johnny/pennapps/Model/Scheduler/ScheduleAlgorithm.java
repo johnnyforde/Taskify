@@ -1,6 +1,4 @@
-package com.example.johnny.pennapps;
-//package com.example.johnny.pennapps.Model.Events.TaskifySchedulable;
-
+package com.example.johnny.pennapps.Model.Scheduler;
 
 import android.util.Log;
 
@@ -33,9 +31,6 @@ public class ScheduleAlgorithm {
     }
 
     public PriorityQueue<TaskifySchedulable> requestQueue;
-//    public ScheduleAlgorithm(PriorityQueue<TaskifySchedulable> requestQueue) {
-//        this.requestQueue = requestQueue;
-//    }
 
     public ArrayList<TaskifySchedulable> schedule () {
         ArrayList<TaskifySchedulable> schedules = new ArrayList<TaskifySchedulable>();
@@ -57,7 +52,6 @@ public class ScheduleAlgorithm {
         }
         Duration timeToDeadline = new Duration(currentTime.getMillis(), lastDeadline.getMillis());
         if (totalTime.isLongerThan(timeToDeadline)) {
-//            String i = "Cannot schedule! Total time required exceeds existing time";
             Log.i("Jason","Cannot schedule! Total time required exceeds existing time");
         }
 
@@ -73,7 +67,7 @@ public class ScheduleAlgorithm {
             queue.add(mddTask);
         }
         for (TaskifyTask priorityTask : queue) {
-//            prioritySorted.add(priorityTask);
+//            TODO: prioritySorted.add(priorityTask);
         }
         return null;
     }
