@@ -2,6 +2,7 @@ package com.example.johnny.pennapps.Model.Events;
 
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
+import org.joda.time.Hours;
 import org.joda.time.Interval;
 
 import java.util.List;
@@ -20,18 +21,19 @@ public class TaskifyTask extends TaskifySchedulable {
     // Amount of time the task would take, Jason: is this dynamic/changing?
     private final Duration taskTime;
     // Amount of time spent working on this task
-    private final Duration taskCompleted;
+    private Duration taskProcess;
     // Whether the task is optional or can be dropped if necessary
     private final boolean optional;
     // List of scheduled times to be dedicated to a task
     private List<Interval> scheduledTimes;
 
-    public TaskifyTask(String name, int difficulty, DateTime deadline, Duration estimateTime, Duration timeSpent, boolean optional) {
+    public TaskifyTask(String name, int difficulty, DateTime deadline, Duration taskTime, boolean optional) {
         this.name = name;
         this.difficulty = difficulty;
         this.deadline = deadline;
-        this.taskTime = estimateTime;
-        this.taskCompleted = timeSpent;
+        this.taskTime = taskTime;
+        // Initially no progress made
+        this.taskProcess = new Duration(0,0);
         this.optional = optional;
     }
 
@@ -45,7 +47,7 @@ public class TaskifyTask extends TaskifySchedulable {
         DateTime currentTime = new DateTime();
         Duration timeToDeadline = new Duration(currentTime.getMillis(), this.deadline.getMillis());
 
-        return Math.max(this.taskTime.getMillis(), timeToDeadline.getMillis() - this.taskCompleted.getMillis()) / difficulty;
+        return Math.max(this.taskTime.getMillis(), timeToDeadline.getMillis() - this.taskProcess.getMillis()) / difficulty;
     }
 
     public boolean isOptional() {
@@ -70,16 +72,20 @@ public class TaskifyTask extends TaskifySchedulable {
         return this.taskTime;
     }
 
-    public Duration getTaskCompleted() {
-        return this.taskCompleted;
+    public Duration getTaskProcess() {
+        return this.taskProcess;
     }
 
-    public void setScheduledTimes() {
+    public void incrementTaskProcessByHour() {
+        taskProcess = taskProcess.plus(Hours.hours(1).toStandardDuration().getMillis());
+    }
 
+    public boolean isCompleted() {
+        return taskProcess.isLongerThan(taskTime);
     }
 
     public String toString() {
         return "Task: " + this.name + "; Deadline: " + this.deadline + "; Task Time: " + this.taskTime
-                + "; Completed: " + this.taskCompleted;
+                + "; Completed: " + this.taskProcess;
     }
 }
