@@ -1,6 +1,7 @@
 package com.example.johnny.pennapps.Model.Scheduler;
 
 import com.example.johnny.pennapps.Model.Events.TaskifyCalendarEvent;
+import com.firebase.client.Firebase;
 
 import org.joda.time.Hours;
 
@@ -20,9 +21,10 @@ public class Scheduler {
     // Keys for every hour block only
     private Map<Long, TaskifyCalendarEvent> availabilities = new HashMap<Long, TaskifyCalendarEvent>();
     private List<TaskifyCalendarEvent> schedule = new ArrayList<TaskifyCalendarEvent>();
+    private Firebase database;
 
     public Scheduler() {
-
+        database = new Firebase("https://pennTaskify.firebaseio.com/");
     }
 
     /**
@@ -30,7 +32,7 @@ public class Scheduler {
      *
      * @param commitments
      */
-    public void addCommitments(List<TaskifyCalendarEvent> commitments) {
+    public Map<Long, TaskifyCalendarEvent> addCommitments(List<TaskifyCalendarEvent> commitments) {
         for (TaskifyCalendarEvent commitment : commitments) {
 
             // Get the duration in hours of the commitment
@@ -41,10 +43,12 @@ public class Scheduler {
                 long offset = Hours.hours(i).toStandardDuration().getMillis();
                 availabilities.put(commitment.getInterval().getStartMillis() + offset, commitment);
             }
+            database.child("commitments").setValue(commitment.getEvent().getName());
         }
 
         // Add commitments to the schedule
         schedule.addAll(commitments);
+        return availabilities;
     }
 
     /**

@@ -97,9 +97,9 @@ public class TaskifyCommitment extends TaskifySchedulable {
     public void generateScheduledTimes() {
 
         // Clear all current scheduled events
-        scheduledTimes.clear();
+        if (scheduledTimes != null) scheduledTimes.clear();
 
-        // Create DateTime object for start of first iteration
+        // Create DateTime o    bject for start of first iteration
         DateTime scheduleStart = new DateTime(startDate.getYear(), startDate.getMonthOfYear(), startDate.getDayOfMonth(), startTime.getHourOfDay(), startTime.getMinuteOfHour());
         // Create DateTime object for end of first
         DateTime scheduleEnd = new DateTime (startDate.getYear(), startDate.getMonthOfYear(), startDate.getDayOfMonth(), endTime.getHourOfDay(), endTime.getMinuteOfHour());
