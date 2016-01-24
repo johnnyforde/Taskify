@@ -8,11 +8,14 @@ package com.example.johnny.pennapps.Model.Events;
 public abstract class TaskifySchedulable {
 
     protected String name;
-    protected int priority;
+
+    protected double priority;
 
     public String getName() {
         return name;
     }
 
-    public abstract int getPriority();
+    public double getPriority() {
+        return priority;
+    }
 }
