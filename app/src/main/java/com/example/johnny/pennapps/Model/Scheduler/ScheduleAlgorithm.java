@@ -53,10 +53,10 @@ public class ScheduleAlgorithm {
      */
     public List<TaskifyCalendarEvent> scheduleTasksByPriority(List<TaskifyTask> toSchedule, Map<Long, TaskifyCalendarEvent> availabilities) {
         // Sort by MDD
-        List<TaskifyTask> mddSorted = taskifySort(toSchedule);
+        //List<TaskifyTask> mddSorted = taskifySort(toSchedule);
         String in  = new String("number of tasks" + toSchedule.size());
         Log.i("toSchedule", in);
-        Log.i("shouldbecorrect", mddSorted.get(0).getDeadline().toString());
+        //Log.i("shouldbecorrect", mddSorted.get(0).getDeadline().toString());
 
         // Sort by MDD then by Priority
         Comparator<TaskifyTask> comp = new priorityComparator();
@@ -125,7 +125,7 @@ public class ScheduleAlgorithm {
     public double taskifyMDD(double processed, TaskifyTask task) {
         return Math.max(processed + task.getTaskTime().getMillis(), (double)task.getDeadline().getMillis());
     }
-
+    /*
     public ArrayList<TaskifyTask> taskifySort(List<TaskifyTask> toSchedule) {
         ArrayList<TaskifyTask> unsortedTasks =  new ArrayList<TaskifyTask>(toSchedule);
         ArrayList<TaskifyTask> sortedTasks = new ArrayList<TaskifyTask>();
@@ -148,4 +148,5 @@ public class ScheduleAlgorithm {
 
         return sortedTasks;
     }
+    */
 }

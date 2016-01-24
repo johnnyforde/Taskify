@@ -14,19 +14,16 @@ import com.example.johnny.pennapps.Model.Events.RepeatingInterval;
 import com.example.johnny.pennapps.Model.Events.TaskifyCalendarEvent;
 import com.example.johnny.pennapps.Model.Events.TaskifyCommitment;
 import com.example.johnny.pennapps.Model.Events.TaskifyTask;
-import com.example.johnny.pennapps.Model.Scheduler.ScheduleAlgorithm;
 import com.example.johnny.pennapps.Model.Scheduler.Scheduler;
 import com.firebase.client.Firebase;
 
 import org.joda.time.DateTime;
-import org.joda.time.Duration;
 import org.joda.time.Hours;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -49,24 +46,18 @@ public class MainActivity extends AppCompatActivity {
         });
 
         Scheduler schedule = new Scheduler();
-        ScheduleAlgorithm taskScheduler = new ScheduleAlgorithm();
 
         List<TaskifyCalendarEvent> commitments = new ArrayList<TaskifyCalendarEvent>();
-        TaskifyCommitment breakfast = new TaskifyCommitment("Breakfast", new DateTime(2016, 1, 25, 7, 30), new DateTime(2016, 1 , 25, 8, 30));
-        TaskifyCommitment school = new TaskifyCommitment("School", new LocalTime(7,45), new LocalTime(14,50), new LocalDate(2016, 1, 25), new LocalDate(2016, 5, 17), RepeatingInterval.WEEKDAYS);
-        commitments.addAll(breakfast.getScheduledTimes());
-        commitments.addAll(school.getScheduledTimes());
-        Map<Long, TaskifyCalendarEvent> availabilities = schedule.addCommitments(commitments);
-//        Log.i("KEVIN", "Commitments: " + commitments);
-
-//        Firebase database = new Firebase("https://pennTaskify.firebaseio.com/");
-//        database.child("lecture").setValue("CS-101");
-
-//        public TaskifyTask(String name, int difficulty, DateTime deadline, Duration estimateTime, Duration timeSpent, boolean optional) {
-        TaskifyTask chemlab = new TaskifyTask("Chem Lab", 3, new DateTime(2016,1,28,21, 0), new Duration(Hours.hours(3).toStandardDuration().getMillis()), new Duration(0), false);
-        Log.i("chemlab", chemlab.getDeadline().toString());
-        List<TaskifyTask> tasks = new ArrayList<TaskifyTask>(); tasks.add(chemlab);
-        taskScheduler.scheduleTasksByPriority(tasks, availabilities);
+        TaskifyCommitment breakfast = new TaskifyCommitment("Breakfast", new DateTime(2016, 1, 25, 6, 0), new DateTime(2016, 1 , 25, 7, 0));
+        TaskifyCommitment school = new TaskifyCommitment("School", new LocalTime(8,0), new LocalTime(14,0), new LocalDate(2016, 1, 25), new LocalDate(2016, 1, 29), RepeatingInterval.WEEKDAYS);
+        TaskifyTask mathHW = new TaskifyTask("Math Homework", 10, new DateTime(2016, 2, 1, 8, 0), Hours.hours(2).toStandardDuration(), false);
+        TaskifyTask chemHW = new TaskifyTask("Chem Homework", 5, new DateTime(2016, 2, 6, 8, 0), Hours.hours(4).toStandardDuration(), false);
+        schedule.addCommitment(breakfast);
+        schedule.addCommitment(school);
+        schedule.addTask(mathHW);
+        schedule.addTask(chemHW);
+        schedule.reschedule();
+        Log.i("KEVIN", "Schedule: " + schedule.getSchedule());
 
 
     }

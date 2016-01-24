@@ -1,5 +1,7 @@
 package com.example.johnny.pennapps.Model.Scheduler;
 
+import android.util.Log;
+
 import com.example.johnny.pennapps.Model.Events.TaskifyCalendarEvent;
 import com.example.johnny.pennapps.Model.Events.TaskifyCommitment;
 import com.example.johnny.pennapps.Model.Events.TaskifyTask;
@@ -78,13 +80,17 @@ public class Scheduler {
     public void reschedule() {
         // Clear the current schedule and list of availabilities
         schedule.clear();
+        Log.i("KEVIN","Schedule cleared");
         availabilities.clear();
+        Log.i("KEVIN", "Availabilities cleared");
 
         // Schedule static time commitments
         scheduleCommitments();
+        Log.i("KEVIN", "Commitments scheduled");
 
         // Schedule tasks over time commitments
         scheduleTasks();
+        Log.i("KEVIN", "Tasks scheduled");
     }
 
     /**
@@ -123,15 +129,20 @@ public class Scheduler {
             pq.add(task);
         }
 
+        Log.i("KEVIN", "Tasks added to PQ");
+
         DateTime now = new DateTime();
         // Creates a new DateTime object rounded to the next hour to begin scheduling
         DateTime dateTime = new DateTime(now.getYear(), now.getMonthOfYear(), now.getDayOfMonth(), now.getHourOfDay() + 1, 0);
 
         while (!pq.isEmpty()) {
+            Log.i("KEVIN", "PQ Not empty");
             // If the next hour does not already have a scheduled event
-            if (availabilities.get(dateTime.getMillis()) != null) {
+            Log.i("KEVIN", "Availabilities: " + availabilities.get(dateTime.getMillis()));
+            if (availabilities.get(dateTime.getMillis()) == null) {
                 // Schedule task with the highest priority next
                 TaskifyTask taskToSchedule = pq.remove();
+                Log.i("KEVIN", "Task to schedule: " + taskToSchedule.getName());
                 // Create a one hour calender event for the task
                 TaskifyCalendarEvent scheduledEvent = new TaskifyCalendarEvent(new Interval(dateTime, dateTime.plusHours(1)), taskToSchedule);
                 // Allocate this hour block to this event
@@ -143,10 +154,11 @@ public class Scheduler {
 
                 // If the task is not completed, add it back to the priority queue for rescheduling
                 if (!taskToSchedule.isCompleted()) {
+                    Log.i("KEVIN", "Re-adding taskt to PQ");
                     pq.add(taskToSchedule);
                 }
             }
-
+            Log.i("KEVIN", "Date Time to schedule: " + dateTime);
             dateTime = dateTime.plusHours(1);
         }
     }

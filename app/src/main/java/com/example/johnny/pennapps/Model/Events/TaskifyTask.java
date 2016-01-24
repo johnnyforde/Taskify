@@ -1,5 +1,7 @@
 package com.example.johnny.pennapps.Model.Events;
 
+import android.util.Log;
+
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 import org.joda.time.Hours;
@@ -81,6 +83,7 @@ public class TaskifyTask extends TaskifySchedulable {
     }
 
     public boolean isCompleted() {
+        Log.i("KEVIN", "Tasks process: " + taskProcess + "; Task time: " + taskTime);
         return taskProcess.isLongerThan(taskTime);
     }
 
