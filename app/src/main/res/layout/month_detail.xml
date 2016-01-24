@@ -84,7 +84,7 @@
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:text="Small Text"
                     android:id="@+id/textView37"
-                    android:layout_column="0"
+                    android:layout_column="0"/>
 
             </TableRow>
 
