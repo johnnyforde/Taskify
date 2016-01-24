@@ -47,6 +47,14 @@ public class Scheduler {
         schedule.addAll(commitments);
     }
 
+    /**
+     * Adds time commitments to the HashMap
+     *
+     */
+    public void addTasks(List<TaskifyCalendarEvent> tasks) {
+
+    }
+
     public Map<Long, TaskifyCalendarEvent> getAvailabilities() {
         return availabilities;
     }
